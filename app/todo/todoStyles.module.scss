@@ -1,0 +1,222 @@
+@use "sass:string";
+@use "sass:math";
+@import url("https://fonts.googleapis.com/css2?family=Poiret+One&family=Yatra+One&display=swap");
+
+@function random-r() {
+  @return random(180) + 55;
+}
+
+@function random-color-with-random-r() {
+  $r: random(180) + 55;
+  $g: 150;
+  $b: 255;
+  @return rgb($r, $g, $b);
+}
+
+@function multiple-box-shadow($n) {
+  $value: "#{math.random(2000)}px #{math.random(2000)}px #{random-color-with-random-r()}";
+  @for $i from 2 through $n {
+    $value: "#{$value}, #{math.random(2000)}px #{math.random(2000)}px #{random-color-with-random-r()}";
+  }
+  @return string.unquote($value);
+}
+
+$shadows-small: multiple-box-shadow(700);
+$shadows-medium: multiple-box-shadow(200);
+$shadows-big: multiple-box-shadow(100);
+
+.starryBackContainer {
+  height: 100%;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  overflow: hidden;
+  > div {
+    position: relative;
+  }
+
+  @keyframes animateStars {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-2000px);
+    }
+  }
+}
+.smStars {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: $shadows-small;
+  border-radius: 100px;
+  animation: animateStars 200s linear infinite;
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 0px;
+    width: 1px;
+    height: 1px;
+    background: transparent;
+    box-shadow: $shadows-small;
+  }
+}
+
+.mdStars {
+  width: 2px;
+  height: 2px;
+  border-radius: 100px;
+  background: transparent;
+  box-shadow: $shadows-medium;
+  animation: animateStars 100s linear infinite;
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 2000px;
+    width: 2px;
+    height: 2px;
+    background: transparent;
+    box-shadow: $shadows-medium;
+  }
+}
+
+.bgStars {
+  width: 3px;
+  height: 3px;
+  border-radius: 100px;
+  background: transparent;
+  box-shadow: $shadows-big;
+  animation: animateStars 80s linear infinite;
+  &:after {
+    content: " ";
+    position: absolute;
+    top: 2000px;
+    width: 3px;
+    height: 3px;
+    background: transparent;
+    box-shadow: $shadows-big;
+  }
+}
+
+.container {
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.toDoHeader {
+  font-family: "Yatra One", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.addNewTask {
+  display: flex;
+  flex-direction: row;
+  justify-self: center;
+  justify-items: center;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px dotted white;
+}
+.addNewInput {
+  font-family: "Poiret One", sans-serif;
+  font-size: 24px;
+  width: 400px;
+
+  padding-bottom: 10px;
+  height: 25px;
+  color: white;
+  background: inherit;
+  border: none;
+}
+.addNewInput:focus {
+  outline: none;
+}
+.addNewInput:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+}
+.buttonAdd {
+  font-family: "Poiret One", sans-serif;
+  background-color: inherit;
+  // outline: none;
+  // border: none;
+  color: white;
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonAnimation {
+  $btn-color: white;
+  $btn-hover-color: white;
+  $size: 3px;
+  $offset: 100%;
+  position: relative;
+  border: none;
+  overflow: hidden;
+  color: $btn-color;
+  span {
+    display: inline-block;
+    width: 40px;
+    height: 25px;
+    display: block;
+    position: relative;
+  }
+  &::before,
+  &::after,
+  span::before,
+  span::after {
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    transition: all 0.5s;
+    border: 2px solid $btn-color;
+    opacity: 0;
+    content: "";
+  }
+  &::before {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+    transform: translate(-$offset, -$offset);
+  }
+  &::after {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+    transform: translate(-$offset, $offset);
+  }
+  span::before {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+    transform: translate($offset, -$offset);
+  }
+  span::after {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+    transform: translate($offset, $offset);
+  }
+  &:hover {
+    font-size: 16.5px;
+    color: $btn-hover-color;
+    &::before,
+    &::after,
+    span::before,
+    span::after {
+      opacity: 1;
+      border-color: $btn-hover-color;
+      transform: translate(0%, 0%);
+    }
+  }
+}

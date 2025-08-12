@@ -1,0 +1,36 @@
+
+/* Helper function replaces all occurrences of $search with $replace in $string.
+  Unused here, useful to remember for future reference. */
+@function str-replace($string, $search, $replace: "") {
+  // Find first index of $search inside $string
+  $index: str-index($string, $search);
+
+  @if $index {
+    // (part before the match) + replacement(+) + process the rest recursively(if several words present, will do like a loop until it returns null, then return the concatenated string
+    $before: str-slice($string, 1, $index - 1);
+    $after: str-slice($string, $index + str-length($search));
+    @return $before + $replace + str-replace($after, $search, $replace); 
+    /* how do I call the func inside this very func? Recursion! Helps break down 
+    the issue into smaller more manageable problems  */
+  }
+
+  // Base case: no match found
+  @return $string;
+}
+
+/* The googleFont mixin:
+   - $fontName: human font name, e.g. "Rubik Microbe"
+   - $fallback: optional fallback stack
+*/
+@mixin googleFont($fontName, $fallback: sans-serif) {
+  // Build the URL-safe font name: replace spaces with '+'
+  $fontUrlName: str-replace($fontName, " ", "+"); //this is where the helper function is used.
+
+  // 2) Import the Google Fonts stylesheet for that font
+  //    Important: place this mixin in a global file, or call this once globally,
+  //    to avoid repeated identical imports. Might result in repeated css imports, worsens loads time and etc.
+  //easy stuff, but still wtf. Research why scss still havent introduced built-in method for that issue.
+  @import url("https://fonts.googleapis.com/css2?family=#{$fontUrlName}&display=swap");
+
+  font-family: $fontName, $fallback;
+}
