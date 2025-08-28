@@ -1,54 +1,38 @@
-@use "sass:string";
-@use "sass:math";
-@import url("https://fonts.googleapis.com/css2?family=Poiret+One&family=Yatra+One&display=swap");
-
-@function random-r() {
-  @return random(180) + 55;
-}
-
-@function random-color-with-random-r() {
-  $r: random(180) + 55;
-  $g: 150;
-  $b: 255;
-  @return rgb($r, $g, $b);
-}
-
-@function multiple-box-shadow($n) {
-  $value: "#{math.random(2000)}px #{math.random(2000)}px #{random-color-with-random-r()}";
-  @for $i from 2 through $n {
-    $value: "#{$value}, #{math.random(2000)}px #{math.random(2000)}px #{random-color-with-random-r()}";
-  }
-  @return string.unquote($value);
-}
-
-$shadows-small: multiple-box-shadow(700);
-$shadows-medium: multiple-box-shadow(200);
-$shadows-big: multiple-box-shadow(100);
-
 .starryBackContainer {
-  height: 100%;
   background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-  overflow: hidden;
+  position: absolute; /* Stay behind content */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; 
+  z-index: 0; /* Behind main content */
   > div {
-    position: relative;
-  }
-
-  @keyframes animateStars {
-    from {
-      transform: translateY(0px);
-    }
-    to {
-      transform: translateY(-2000px);
-    }
+    position: absolute;
+    pointer-events: none;
+    will-change: transform;
   }
 }
-.smStars {
+
+.container {
+  display: flex; /* Drive height by content */
+  flex-direction: column;
+  align-items: center;
+  margin-top: 150px;
+/* Add 50px to total height */
+  position: relative; /* Part of document flow */
+  z-index: 1; /* Above starry background */
+  width: 100%;
+  min-height: calc(100vh - 150px);
+}
+
+.smStars, .mdStars, .bgStars {
   width: 1px;
   height: 1px;
   background: transparent;
-  box-shadow: $shadows-small;
   border-radius: 100px;
   animation: animateStars 200s linear infinite;
+
+  contain: strict; 
   &:after {
     content: " ";
     position: absolute;
@@ -56,51 +40,39 @@ $shadows-big: multiple-box-shadow(100);
     width: 1px;
     height: 1px;
     background: transparent;
-    box-shadow: $shadows-small;
+    pointer-events: none;
   }
 }
 
 .mdStars {
   width: 2px;
   height: 2px;
-  border-radius: 100px;
-  background: transparent;
-  box-shadow: $shadows-medium;
   animation: animateStars 100s linear infinite;
   &:after {
-    content: " ";
-    position: absolute;
     top: 2000px;
     width: 2px;
     height: 2px;
-    background: transparent;
-    box-shadow: $shadows-medium;
   }
 }
 
 .bgStars {
   width: 3px;
   height: 3px;
-  border-radius: 100px;
-  background: transparent;
-  box-shadow: $shadows-big;
   animation: animateStars 80s linear infinite;
   &:after {
-    content: " ";
-    position: absolute;
     top: 2000px;
     width: 3px;
     height: 3px;
-    background: transparent;
-    box-shadow: $shadows-big;
   }
 }
 
-.container {
-  margin-top: 150px;
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
+@keyframes animateStars {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
 }
 
 .toDoHeader {
@@ -110,38 +82,35 @@ $shadows-big: multiple-box-shadow(100);
   align-items: center;
   color: white;
 }
+
 .addNewTask {
   display: flex;
   flex-direction: row;
   justify-self: center;
-  justify-items: center;
   align-items: center;
   gap: 10px;
   border-bottom: 1px dotted white;
 }
+
 .addNewInput {
   font-family: "Poiret One", sans-serif;
   font-size: 24px;
   width: 400px;
-
   padding-bottom: 10px;
-  height: 25px;
+  min-height: 25px; /* Allow growth */
   color: white;
   background: inherit;
   border: none;
+  resize: none;
+  line-height: 1.2; /* Consistent spacing */
 }
+
 .addNewInput:focus {
   outline: none;
 }
+
 .addNewInput:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
-}
-.buttonAdd {
-  font-family: "Poiret One", sans-serif;
-  background-color: inherit;
-  // outline: none;
-  // border: none;
-  color: white;
 }
 
 .taskList {
@@ -149,23 +118,38 @@ $shadows-big: multiple-box-shadow(100);
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 20px;
+  width: 600px; /* Match taskContainer width */
+}
+
+.taskList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.taskList::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.buttonAdd {
+  font-family: "Poiret One", sans-serif;
+  background-color: inherit;
+  color: white;
 }
 
 .buttonAnimation {
   $btn-color: white;
   $btn-hover-color: white;
-  $size: 3px;
-  $offset: 100%;
+  $size: 5px;
   position: relative;
   border: none;
   overflow: hidden;
   color: $btn-color;
   span {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
     width: 40px;
-    height: 25px;
-    display: block;
-    position: relative;
+    padding-right: 5px;
   }
   &::before,
   &::after,
@@ -174,8 +158,8 @@ $shadows-big: multiple-box-shadow(100);
     width: 5px;
     height: 5px;
     position: absolute;
-    transition: all 0.5s;
-    border: 2px solid $btn-color;
+    transition: all 0.3s;
+    border: 1.5px solid $btn-color;
     opacity: 0;
     content: "";
   }
@@ -184,28 +168,28 @@ $shadows-big: multiple-box-shadow(100);
     left: 0;
     border-right: none;
     border-bottom: none;
-    transform: translate(-$offset, -$offset);
+    transform: translate(-100%, -100%);
   }
   &::after {
     bottom: 0;
     left: 0;
     border-right: none;
     border-top: none;
-    transform: translate(-$offset, $offset);
+    transform: translate(-100%, 100%);
   }
   span::before {
     top: 0;
     right: 0;
     border-left: none;
     border-bottom: none;
-    transform: translate($offset, -$offset);
+    transform: translate(100%, -100%);
   }
   span::after {
     bottom: 0;
     right: 0;
     border-left: none;
     border-top: none;
-    transform: translate($offset, $offset);
+    transform: translate(100%, 100%);
   }
   &:hover {
     font-size: 16.5px;

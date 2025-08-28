@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["svgr.d.ts","next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next.config.js"],
+  "include": ["svgr.d.ts","next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next.config.js", "app/utils/blackholeStars.js"],
   "exclude": ["node_modules"]
 }

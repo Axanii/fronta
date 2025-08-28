@@ -1,17 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Poiret+One&family=Yatra+One&display=swap");
+
+// varibles to make glow and cursor pointer for hover effect in to do icons
+
+$glow-effect: (
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7))
+    drop-shadow(0 0 6px rgba(255, 255, 255, 0.5))
+    drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)),
+  transition: filter 0.25s ease-in-out,
+  cursor: pointer,
+);
+
+@mixin apply-glow($effect-map) {
+  @each $prop, $val in $effect-map {
+    #{$prop}: #{$val};
+  }
+}
+
 .taskContainer {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   width: 600px;
-  height: 50px;
-  padding-bottom: 6px;
+  min-height: 50px; /* Changed from height: 50px */
+  padding-bottom: 2px;
   border-bottom: 1px solid white;
+  align-items: center; /* Add for vertical centering */
 }
+
 .taskTitle {
+  font-family: "Poiret One";
   width: 500px;
   color: white;
   font-size: 24px;
-  align-self: center;
+  white-space: pre-line; /* Preserve newlines, allow wrapping */
+  word-wrap: break-word;
+  margin-bottom: 6px;
+  /* Remove: overflow: hidden; overflow-y: auto; */
 }
 .buttonsContainer {
   display: flex;
@@ -21,8 +44,44 @@
 .editIconStyle {
   border: none;
   background-color: inherit;
+  &:hover {
+    @include apply-glow($glow-effect);
+  }
 }
 .deleteIconStyle {
   border: none;
   background-color: inherit;
+  &:hover {
+    @include apply-glow($glow-effect);
+  }
+}
+.acceptEditIcon {
+  border: none;
+  background-color: inherit;
+
+  &:hover {
+    @include apply-glow($glow-effect);
+  }
+}
+.cancelEditIcon {
+  border: none;
+  background-color: inherit;
+  &:hover {
+    @include apply-glow($glow-effect);
+  }
+}
+.editInputOnChange {
+  font-family: "Poiret One";
+  font-size: 24px;
+  background-color: inherit;
+  color: #FFF;
+  width: 500px;
+  min-height: 35px; /* Add initial min-height; remove height: 100% */
+  overflow: hidden;
+  outline: none;
+  border: none;
+  resize: none;
+  field-sizing: content;
+  margin-top: 1px;
+  padding: 0;
 }

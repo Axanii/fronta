@@ -1,0 +1,220 @@
+.landingContainer {
+  margin: 0;
+  width: 100vw; /* Full viewport width */
+  max-width: 100vw; /* Ensures it doesn't exceed viewport */
+}
+.header {
+  display: inline-flex;
+  height: 10vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: space-between;
+
+  > span {
+    font-size: 20px;
+    width: 70%;
+    padding-left: 4em;
+  }
+}
+.authButtons {
+  padding-right: 1em;
+}
+
+.introduction {
+  position: relative; // parent must be relative to allow absolute child
+  display: flex;
+  flex-direction: row;
+  padding: 3rem;
+  width: 100%;
+  height: 30rem;
+  overflow: hidden; // prevent background from spilling
+}
+
+// BACKGROUND ANIMATION OF INTRODUCTION CONTAINER
+/* ------------------------------------------------------------------------------------------- */
+
+// background layer (takes full space, behind everything)
+
+.backgroundLayer {
+  position: absolute;
+  max-width: 100vw;
+  inset: 0;
+  z-index: 0;
+  background-color: hsl(274, 9%, 15%);
+}
+
+// animated gradient layer
+.el {
+  max-width: 100vw;
+  position: absolute;
+  inset: 0;
+  z-index: 0; // still behind content
+  background: conic-gradient(
+    from 180deg at 50% 70%,
+    hsla(0, 0%, 98%, 1) 0deg,
+    #eec32d 72deg,
+    #ec4b4b 144deg,
+    #709ab9 216deg,
+    #4dffbf 288deg,
+    rgb(255, 255, 255) 1turn
+  );
+  // for chrome and safari
+  -webkit-mask:
+    radial-gradient(circle at 50% 50%, white 2px, transparent 2.5px) 50% 50% /
+      50px 50px,
+    url("https://assets.codepen.io/605876/noise-mask.png") 256px 50% / 256px
+      256px;
+
+  // for firefox
+  mask:
+    radial-gradient(circle at 50% 50%, white 2px, transparent 2.5px) 50% 50% /
+      50px 50px,
+    url("https://assets.codepen.io/605876/noise-mask.png") 256px 50% / 256px
+      256px;
+  mask-composite: intersect;
+  animation: flicker 20s infinite linear;
+
+  @keyframes flicker {
+    to {
+      mask-position:
+        50% 50%,
+        0 50%;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------------------------- */
+
+.textContainer {
+  z-index: 100;
+  box-sizing: border-box;
+  padding-right: 1rem;
+  width: 50%;
+  line-height: 24px;
+  color: white;
+  padding-left: 10em;
+}
+
+//extra wrapper classes for text and techStack just in case I need some additional specific styles for the sections
+.introTextWrapper {
+  text-align: justify;
+}
+.techStackWrapper {
+}
+
+.listContainer {
+  display: inline-flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  gap: 5em;
+  z-index: 1;
+  > #firstHalf {
+    margin-right: 2rem;
+  }
+}
+.imageWrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.firstHalf {
+  text-align: start;
+}
+
+/* _______________________________ ANIMATION AROUND PROJECT LINKS _______________________________  */
+
+.projects {
+  background: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.projects a {
+  position: relative;
+  display: inline-block;
+  padding: 1rem 2rem;
+  font-size: 24px;
+  color: white;
+  text-decoration: none;
+
+  // top line, animate from left
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -20%;
+    width: 80%;
+    height: 2px;
+    background: red;
+    transform: scaleX(0); // hidden
+    transform-origin: left center; // expand and move from left, can i double transition? yes, i can, not triple with rotation
+    transition: left 0.5s ease, transform 0.75s ease;
+  }
+
+  // bottom line, animate from right
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: -20%;
+    width: 80%;
+    height: 2px;
+    background: red;
+    transform: scaleX(0);
+    transform-origin: right;
+    // transition: transform 0.3s ease-in;
+    transition: right 0.5s ease, transform 0.75s ease; // slight delay
+  }
+
+  // left line, animate from bottom
+  span::before {
+    content: "";
+    position: absolute;
+    bottom: -20%;
+    left: 0;
+    width: 2px;
+    height: 80%;
+    background: red;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: bottom 0.5s ease, transform 0.75s ease;
+  }
+
+  // right line, animate from top
+  span::after {
+    content: "";
+    position: absolute;
+    top: -20%;
+    right: 0;
+    width: 2px;
+    height: 80%;
+    background: red;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: top 0.5s ease, transform 0.75s ease;
+  }
+
+  // hover → animate all lines to expand
+  &:hover::before,
+  &:hover::after,
+  &:hover span::before,
+  &:hover span::after {
+    transform: scale(1);
+  }
+
+  &:hover::before {
+    transform: scaleX(1);
+    left: 10%;
+  }
+  &:hover::after {
+    right: 10%;
+  }
+  &:hover span::before {
+    bottom: 10%;
+  }
+  &:hover span::after {
+    top: 10%;
+  }
+}
+
+/* ____________________________________________________________ */
