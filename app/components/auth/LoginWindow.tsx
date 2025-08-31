@@ -4,6 +4,7 @@ import style from "@/app/styles/style-for-components/login.module.scss";
 import { useState } from "react";
 import useLoginStore from "@/app/store/loginStore";
 import Close from "../CloseButton";
+import { useModal } from "@/app/context/ModalContext";
 
 const LoginWindow: React.FC = () => {
   const [nickname, setNickname] = useState("");
@@ -14,19 +15,24 @@ const LoginWindow: React.FC = () => {
   const token = useLoginStore((state) => state.token);
   const login = useLoginStore((state) => state.login);
 
+  const { closeModal } = useModal();
+
   const handleNeedRegister = () => {
     setNeedReg(true);
   };
-  const handleRegitration = () => {
+  const handleRegitration = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     localStorage.setItem("nickname", regNickname);
     localStorage.setItem("password", regPassword);
     setNeedReg(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (nickname && pass) {
       try {
         login({ username: nickname, password: pass });
+        closeModal();
       } catch (err) {
         alert((err as Error).message);
       }
@@ -38,12 +44,11 @@ const LoginWindow: React.FC = () => {
       {!token && (
         <>
           <div className={style.background}></div>
-         
           {needReg ? (
             <div className={style.modal}>
-               <Close />
+              <Close />
               <h1>Register</h1>
-              <form className={style.loginForm}>
+              <form onSubmit={handleRegitration} className={style.loginForm}>
                 <div className={style.emailInput}>
                   <label htmlFor="regName">Nickname</label>
                   <input
@@ -62,21 +67,25 @@ const LoginWindow: React.FC = () => {
                     name="regPassword"
                   />
                 </div>
-              </form>
-              <div className={style.buttonContainer}>
-                <button type="button" onClick={() => setNeedReg(false)}>
-                  Back
-                </button>
-                <button onClick={() => handleRegitration()} type="button">
+                <button className={style.loginButton} type="submit">
+                  {" "}
+                  {/* mirrored styles for register and login   */}
                   Register
                 </button>
-              </div>
+              </form>
+              <button
+                className={style.regButton}
+                type="button"
+                onClick={() => setNeedReg(false)}
+              >
+                Back
+              </button>
             </div>
           ) : (
             <div className={style.modal}>
-               <Close />
+              <Close />
               <h1>Login</h1>
-              <form className={style.loginForm}>
+              <form onSubmit={handleSubmit} className={style.loginForm}>
                 <div className={style.emailInput}>
                   <label htmlFor="name">Nickname</label>
                   <input
@@ -96,11 +105,17 @@ const LoginWindow: React.FC = () => {
                     name="password"
                   />
                 </div>
+                <button className={style.loginButton} type="submit">
+                  Log in
+                </button>
               </form>
-              <div className={style.buttonContainer}>
-                <button onClick={handleNeedRegister}>Register</button>
-                <button onClick={() => handleSubmit()}>Log in</button>
-              </div>
+              <button
+                className={style.regButton}
+                onClick={handleNeedRegister}
+                type="button"
+              >
+                Register
+              </button>
             </div>
           )}
         </>

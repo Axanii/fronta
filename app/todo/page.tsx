@@ -7,18 +7,21 @@ import LoginWindow from "../components/auth/LoginWindow";
 import useLoginStore from "../store/loginStore";
 import LogOut from "../components/LogoutButton";
 import ReturnToMain from "../components/ReturnToMain";
+import { ModalProvider } from "../context/ModalContext";
 
 const ToDoPage = () => {
   const [input, setInput] = useState("");
   const [editValue, setEditValue] = useState("");
   const [editId, setEditId] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const token = useLoginStore((state) => state.token);
-  // this is for client-side that adds an entry to history stack, 
+
+  // this is for client-side that adds an entry to history stack,
   // alternatively .replace() - If you want client navigation without adding to history (similar to server redirect)
 
   const { tasks, editTask, deleteTask, addTask } = useTaskStore(
-    (state) => state
+    (state) => state,
   );
 
   const handleEditStart = (id: string, currentTitle: string) => {
@@ -52,6 +55,19 @@ const ToDoPage = () => {
     addTask(title.trim());
     setInput(""); // clear input after add
   };
+
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  
+  useEffect(() => {
+    if (!token) {
+      setShowModal(true);
+    } else {
+      setShowModal(false); // optional: hide modal if token appears
+    }
+  }, [token]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -120,7 +136,11 @@ const ToDoPage = () => {
           </main>
         </>
       ) : (
-        <LoginWindow />
+        showModal &&  (
+          <ModalProvider closeModal={handleCloseModal}>
+            <LoginWindow />
+          </ModalProvider>
+        )
       )}
     </>
   );
