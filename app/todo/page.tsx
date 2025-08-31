@@ -5,21 +5,21 @@ import { useState, useEffect } from "react";
 import Task from "@/app/components/Task";
 import LoginWindow from "../components/auth/LoginWindow";
 import useLoginStore from "../store/loginStore";
-
+import LogOut from "../components/LogoutButton";
+import ReturnToMain from "../components/ReturnToMain";
 
 const ToDoPage = () => {
   const [input, setInput] = useState("");
   const [editValue, setEditValue] = useState("");
   const [editId, setEditId] = useState<string | null>(null);
-  const [shadows, setShadows] = useState({ small: "", medium: "", big: "" });
-  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  // const [showLoginModal, setShowLoginModal] = useState(false);
-  const token = useLoginStore((state)=> state.token)
+  const [isMounted, setIsMounted] = useState(false);
+  const token = useLoginStore((state) => state.token);
+  // this is for client-side that adds an entry to history stack, 
+  // alternatively .replace() - If you want client navigation without adding to history (similar to server redirect)
 
-  const tasks = useTaskStore((state) => state.tasks);
-  const editTask = useTaskStore((state) => state.editTask);
-  const deleteTask = useTaskStore((state) => state.deleteTask);
-  const addTask = useTaskStore((state) => state.addTask);
+  const { tasks, editTask, deleteTask, addTask } = useTaskStore(
+    (state) => state
+  );
 
   const handleEditStart = (id: string, currentTitle: string) => {
     setEditId(id);
@@ -54,49 +54,22 @@ const ToDoPage = () => {
   };
 
   useEffect(() => {
-    const generateBoxShadow = (n: number) => {
-      let value = `${Math.random() * 2000}px ${Math.random() * 2000}px rgb(${Math.random() * 180 + 55}, ${Math.random() * 180 + 55}, ${Math.random() * 180 + 55})`;
-      for (let i = 2; i <= n; i++) {
-        value += `, ${Math.random() * 2000}px ${Math.random() * 2000}px rgb(${Math.random() * 180 + 55}, ${Math.random() * 180 + 55}, ${Math.random() * 180 + 55})`;
-      }
-      return value;
-    };
-
-    setShadows({
-      small: generateBoxShadow(700),
-      medium: generateBoxShadow(200),
-      big: generateBoxShadow(100),
-    });
+    setIsMounted(true);
   }, []);
-
-  // useEffect(() => {
-  //   const token = sessionStorage.getItem("token");
-  //   if (token) {
-  //     setShowLoginModal(false)
-  //     setIsLoggedIn(true);
-  //   } else {
-  //     setShowLoginModal(true);
-  //   }
-  // }, []);
+  if (!isMounted) return null;
 
   return (
     <>
       {token ? (
         <>
           <div className={styles.starryBackContainer}>
-            <div
-              className={styles.smStars}
-              style={{ boxShadow: shadows.small }}
-            ></div>
-            <div
-              className={styles.mdStars}
-              style={{ boxShadow: shadows.medium }}
-            ></div>
-            <div
-              className={styles.bgStars}
-              style={{ boxShadow: shadows.big }}
-            ></div>
+            <ReturnToMain />
+            <LogOut />
+            <div className={styles.smStars}></div>
+            <div className={styles.mdStars}></div>
+            <div className={styles.bgStars}></div>
           </div>
+
           <main className={styles.container}>
             <div>
               <h1 className={styles.toDoHeader}>To Do List</h1>

@@ -27,7 +27,7 @@
   padding: 3rem;
   width: 100%;
   height: 30rem;
-  overflow: hidden; // prevent background from spilling
+  overflow: hidden;
 }
 
 // BACKGROUND ANIMATION OF INTRODUCTION CONTAINER
@@ -130,25 +130,29 @@
   justify-content: space-evenly;
 }
 .projects a {
+  text-align: center;
+  margin: 1.5rem 0;
+  padding: 1rem 3rem;
   position: relative;
   display: inline-block;
-  padding: 1rem 2rem;
   font-size: 24px;
   color: white;
   text-decoration: none;
-
+  cursor: pointer;
   // top line, animate from left
   &::before {
     content: "";
     position: absolute;
     top: 0;
-    left: -20%;
-    width: 80%;
+    left: -50%;
+    width: 100%;
     height: 2px;
-    background: red;
+    background: white;
     transform: scaleX(0); // hidden
-    transform-origin: left center; // expand and move from left, can i double transition? yes, i can, not triple with rotation
-    transition: left 0.5s ease, transform 0.75s ease;
+    transform-origin: left center; // expand and move from left, can i double transition?
+    transition:
+      left 0.5s ease,
+      transform 0.75s ease;
   }
 
   // bottom line, animate from right
@@ -156,42 +160,48 @@
     content: "";
     position: absolute;
     bottom: 0;
-    right: -20%;
-    width: 80%;
+    right: -50%;
+    width: 100%;
     height: 2px;
-    background: red;
+    background: white;
     transform: scaleX(0);
     transform-origin: right;
     // transition: transform 0.3s ease-in;
-    transition: right 0.5s ease, transform 0.75s ease; // slight delay
+    transition:
+      right 0.5s ease,
+      transform 0.75s ease; // slight delay
   }
 
   // left line, animate from bottom
   span::before {
     content: "";
     position: absolute;
-    bottom: -20%;
+    bottom: -50%;
     left: 0;
     width: 2px;
-    height: 80%;
-    background: red;
+    height: 100%;
+    background: white;
     transform: scaleY(0);
     transform-origin: bottom;
-    transition: bottom 0.5s ease, transform 0.75s ease;
+    transition:
+      bottom 0.5s ease,
+      transform 0.75s ease;
   }
 
   // right line, animate from top
   span::after {
     content: "";
     position: absolute;
-    top: -20%;
+    top: -50%;
     right: 0;
     width: 2px;
-    height: 80%;
-    background: red;
+    height: 100%;
+    background: white;
     transform: scaleY(0);
     transform-origin: top;
-    transition: top 0.5s ease, transform 0.75s ease;
+    transition:
+      top 0.5s ease,
+      transform 0.75s ease;
   }
 
   // hover → animate all lines to expand
@@ -204,17 +214,24 @@
 
   &:hover::before {
     transform: scaleX(1);
-    left: 10%;
+    left: -15%;
   }
   &:hover::after {
-    right: 10%;
+    right: -15%;
   }
   &:hover span::before {
-    bottom: 10%;
+    bottom: 20%;
   }
   &:hover span::after {
-    top: 10%;
+    top: 20%;
   }
+}
+
+.projects a::before,
+.projects a::after,
+.projects a span::before,
+.projects a span::after {
+  pointer-events: none; // they draw visuals but don't block the link
 }
 
 /* ____________________________________________________________ */

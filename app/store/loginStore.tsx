@@ -23,7 +23,10 @@ const useLoginStore = create<LoginState>()(
           throw Error("Wrong credentials, lad. Try again.");
         }
       },
-      logout: () => set({ username: null, token: null }),
+      logout: () => {
+        sessionStorage.removeItem("user-storage");
+        set({ username: null, token: null });
+      },
     }),
     {
       name: "user-storage", // key
@@ -31,7 +34,11 @@ const useLoginStore = create<LoginState>()(
       partialize: (state: LoginState) => ({
         token: state.token,
         username: state.username,
-      }), //Enables you to pick some of the state's fields to be stored in the storage.
+      }),
+      onRehydrateStorage: () => (state, error) => {
+        if (error) console.error("Failed to rehydrate", error);
+        else console.log(state,"Rehydration complete! state is consoled from loginStore");
+      }, //Enables you to pick some of the state's fields to be stored in the storage.
     },
   ),
 );

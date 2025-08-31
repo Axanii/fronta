@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import gandalf from "@/app/assets/images/gandalf.jpeg";
 import styles from "@/app/styles/landingPageStyles.module.scss";
+import LandingAuth from "./components/auth/LandingAuthContainer";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className={styles.landingContainer}>
       <header className={styles.header}>
@@ -13,8 +14,7 @@ export default function Home() {
           if it&apos;s ugly.
         </span>
         <div className={styles.authButtons}>
-          <button>Log in</button>
-          <button>Sign Up</button>
+          <LandingAuth />
         </div>
       </header>
       <section className={`${styles.introduction}`}>
@@ -85,7 +85,8 @@ export default function Home() {
           href={{
             pathname: "/calculator",
           }}
-        ><span></span>
+        >
+          <span></span>
           gg
         </Link>
         <Link

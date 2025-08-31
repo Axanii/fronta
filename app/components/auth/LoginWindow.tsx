@@ -3,6 +3,7 @@ import style from "@/app/styles/style-for-components/login.module.scss";
 // import { blackhole } from "@/app/utils/blackholeStars";
 import { useState } from "react";
 import useLoginStore from "@/app/store/loginStore";
+import Close from "../CloseButton";
 
 const LoginWindow: React.FC = () => {
   const [nickname, setNickname] = useState("");
@@ -32,19 +33,15 @@ const LoginWindow: React.FC = () => {
     }
   };
 
-  // useEffect(() => {
-  //     blackhole(`.${style.stars}`)
-  // }
-  // ,[])
   return (
     <>
       {!token && (
         <>
-          <div className={style.background}>
-            {/* <div className={style.stars}></div> */}
-          </div>
+          <div className={style.background}></div>
+         
           {needReg ? (
             <div className={style.modal}>
+               <Close />
               <h1>Register</h1>
               <form className={style.loginForm}>
                 <div className={style.emailInput}>
@@ -77,6 +74,7 @@ const LoginWindow: React.FC = () => {
             </div>
           ) : (
             <div className={style.modal}>
+               <Close />
               <h1>Login</h1>
               <form className={style.loginForm}>
                 <div className={style.emailInput}>
@@ -94,16 +92,14 @@ const LoginWindow: React.FC = () => {
                   <input
                     value={pass}
                     onChange={(e) => setPass(e.target.value)}
-                    type="text"
+                    type="password"
                     name="password"
                   />
                 </div>
               </form>
               <div className={style.buttonContainer}>
                 <button onClick={handleNeedRegister}>Register</button>
-                <button onClick={() => handleSubmit()}>
-                  Log in
-                </button>
+                <button onClick={() => handleSubmit()}>Log in</button>
               </div>
             </div>
           )}
