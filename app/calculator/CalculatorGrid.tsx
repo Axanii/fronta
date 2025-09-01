@@ -3,6 +3,7 @@
 import { evaluate } from "mathjs";
 import { useState, useRef, useEffect, useCallback } from "react";
 import style from "./calculator.module.scss";
+import { Button } from "./CalcButton";
 
 // interface CalcGridProps {
 //   addition: () => void;
@@ -13,6 +14,7 @@ import style from "./calculator.module.scss";
 
 const CalcGrid: React.FC = () => {
   const [value, setValue] = useState("");
+  const [history, setHistory] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +29,19 @@ const CalcGrid: React.FC = () => {
 
   const calculate = useCallback(() => {
     try {
-      const res = evaluate(value).toString();
+      const safeNum = value.replace(/(\d+(\.\d+)?)%/g, "($1/100)");
+
+      /* 
+	(\d+(\.\d+)?) → matches a number:
+	\d+ → one or more digits (e.g., 50)
+	(\.\d+)? → optional decimal part (e.g., .25 in 50.25)
+	Outer parentheses (...) → capture the entire number, so you can reference it in replacement as $1.
+	% → matches a literal percent sign.
+
+
+      */
+      const res = evaluate(safeNum).toString();
+      setHistory(value);
       setValue(res);
       return res;
     } catch (err) {
@@ -52,7 +66,7 @@ const CalcGrid: React.FC = () => {
       // If user is typing inside an editable element, let that element handle it
       if (isEditable(active)) return;
 
-      // Prevent the browser going back on Backspace when not focused in an input
+      // Prevent the browser going back on backspace when not focused in an input
       if (e.key === "Backspace")
         setValue((prev) => (prev.length > 1 ? prev.slice(0, -1) : "0"));
 
@@ -73,9 +87,11 @@ const CalcGrid: React.FC = () => {
 
   return (
     <div className={style.container}>
+      <input value={history} readOnly className={style.history} />
       <input
         ref={inputRef}
         value={value}
+        readOnly
         autoFocus
         type="text"
         pattern="[0-9]*"
@@ -86,51 +102,50 @@ const CalcGrid: React.FC = () => {
 
       <section className={style.grid}>
         <section className={style.basicFuncs}>
-          <button onClick={clearVal} className={style.ac}>
-            {"AC"}
-          </button>
-          <button
+          <Button label={"AC"} onClick={clearVal} className={style.ac} />
+
+          <Button
+            label="+/-"
             onClick={() => handleButtonClick("-")}
             className={style.plusminus}
-          >
-            +/-
-          </button>
-          <button
+          />
+          <Button
+            label="%"
             onClick={() => handleButtonClick("%")}
             className={style.percent}
-          >
-            %
-          </button>
-          <button
+          />
+          <Button
+            label="/"
             onClick={() => handleButtonClick("/")}
             className={style.division}
-          >
-            /
-          </button>
+          />
         </section>
         <section className={style.upperRow}>
-          <button onClick={() => handleButtonClick("7")}>7</button>
-          <button onClick={() => handleButtonClick("8")}>8</button>
-          <button onClick={() => handleButtonClick("9")}>9</button>
-          <button onClick={() => handleButtonClick("*")}>*</button>
+          <Button label="7" onClick={() => handleButtonClick("7")} />
+          <Button label="8" onClick={() => handleButtonClick("8")} />
+          <Button label="9" onClick={() => handleButtonClick("9")} />
+          <Button label="*" onClick={() => handleButtonClick("*")} />
         </section>
         <section className={style.middleRow}>
-          <button onClick={() => handleButtonClick("4")}>4</button>
-          <button onClick={() => handleButtonClick("5")}>5</button>
-          <button onClick={() => handleButtonClick("6")}>6</button>
-          <button onClick={() => handleButtonClick("-")}>-</button>
+          <Button label="4" onClick={() => handleButtonClick("4")} />
+          <Button label="5" onClick={() => handleButtonClick("5")} />
+          <Button label="6" onClick={() => handleButtonClick("6")} />
+          <Button label="-" onClick={() => handleButtonClick("-")} />
         </section>
         <section className={style.lowerRow}>
-          <button onClick={() => handleButtonClick("1")}>1</button>
-          <button onClick={() => handleButtonClick("2")}>2</button>
-          <button onClick={() => handleButtonClick("3")}>3</button>
-          <button onClick={() => handleButtonClick("+")}>+</button>
+          <Button label="1" onClick={() => handleButtonClick("1")} />
+          <Button label="2" onClick={() => handleButtonClick("2")} />
+          <Button label="3" onClick={() => handleButtonClick("3")} />
+          <Button label="+" onClick={() => handleButtonClick("+")} />
         </section>
         <section className={style.lastRow}>
-          <button>F(n)</button>
-          <button onClick={() => handleButtonClick("0")}>0</button>
-          <button onClick={() => handleButtonClick(",")}>,</button>
-          <button onClick={calculate}>=</button>
+          <Button
+            label="0"
+            className={style.zero}
+            onClick={() => handleButtonClick("0")}
+          />
+          <Button label="." onClick={() => handleButtonClick(".")} />
+          <Button label="=" onClick={calculate} />
         </section>
       </section>
     </div>
