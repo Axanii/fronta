@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { evaluate } from "mathjs";
+import { useState, useRef, useEffect, useCallback } from "react";
 import style from "./calculator.module.scss";
 
 // interface CalcGridProps {
@@ -20,61 +21,56 @@ const CalcGrid: React.FC = () => {
     if (/^\d*$/.test(val)) setValue(val);
   };
 
-  const handleButtonClick = (num: string) => {
+  const handleButtonClick = useCallback((num: string) => {
     setValue((prev) => (prev === "" ? num : prev + num));
-  };
+  }, []);
 
-
+  const calculate = useCallback(() => {
+    try {
+      const res = evaluate(value).toString();
+      setValue(res);
+      return res;
+    } catch (err) {
+      console.error("Invalid expression:", err);
+      return value;
+    }
+  }, [value]);
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
+  const clearVal = useCallback(() => setValue(""), []);
 
   useEffect(() => {
-  const isEditable = (el: Element | null) =>
-    !!el &&
-    (el.tagName === 'INPUT' ||
-     el.tagName === 'TEXTAREA' ||
-     (el as HTMLElement).isContentEditable);
+    const isEditable = (el: Element | null) =>
+      !!el && (el.tagName === "INPUT" || (el as HTMLElement).isContentEditable);
 
-  const onKeyDown = (e: KeyboardEvent) => {
-    const active = document.activeElement;
+    const onKeyDown = (e: KeyboardEvent) => {
+      const active = document.activeElement;
 
-    // If user is typing inside an editable element, let that element handle it
-    if (isEditable(active)) return;
+      // If user is typing inside an editable element, let that element handle it
+      if (isEditable(active)) return;
 
-    // Prevent the browser going back on Backspace when not focused in an input
-    if (e.key === 'Backspace') {
-      e.preventDefault();
-      setValue((prev) => (prev.length > 1 ? prev.slice(0, -1) : '0'));
-      return;
-    }
+      // Prevent the browser going back on Backspace when not focused in an input
+      if (e.key === "Backspace")
+        setValue((prev) => (prev.length > 1 ? prev.slice(0, -1) : "0"));
 
-    // Evaluate on Enter or NumpadEnter
-    if (e.key === 'Enter' || e.key === 'NumpadEnter') {
-      e.preventDefault();
-      return;
-    }
+      // Evaluate on Enter or NumpadEnter
+      if (e.key === "Enter" || e.key === "NumpadEnter") calculate();
 
-    // Allow numbers/operators even when input isn't focused
-    if (/^[0-9+\-*/.]$/.test(e.key)) {
-      e.preventDefault();
-      setValue((prev) => (prev === '0' ? e.key : prev + e.key));
-      return;
-    }
+      // Allow numbers/operators even when input isn't focused
+      if (/^[0-9+\-*/.]$/.test(e.key))
+        setValue((prev) => (prev === "0" ? e.key : prev + e.key));
 
-    // Optional: support decimal comma globally
-    if (e.key === ',') {
-      e.preventDefault();
-      setValue((prev) => (prev === '0' ? '.' : prev + '.'));
-      return;
-    }
-  };
+      // Optional: support decimal comma globally
+      if (e.key === ",") setValue((prev) => (prev === "0" ? "." : prev + "."));
+    };
 
-  window.addEventListener('keydown', onKeyDown);
-  return () => window.removeEventListener('keydown', onKeyDown);
-}, [setValue]);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [setValue, calculate]);
+
   return (
     <div className={style.container}>
       <input
@@ -90,7 +86,7 @@ const CalcGrid: React.FC = () => {
 
       <section className={style.grid}>
         <section className={style.basicFuncs}>
-          <button onClick={() => setValue("")} className={style.ac}>
+          <button onClick={clearVal} className={style.ac}>
             {"AC"}
           </button>
           <button
@@ -134,7 +130,7 @@ const CalcGrid: React.FC = () => {
           <button>F(n)</button>
           <button onClick={() => handleButtonClick("0")}>0</button>
           <button onClick={() => handleButtonClick(",")}>,</button>
-          <button>=</button>
+          <button onClick={calculate}>=</button>
         </section>
       </section>
     </div>
