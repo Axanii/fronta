@@ -7,6 +7,8 @@ import LandingAuth from "./components/auth/LandingAuthContainer";
 export default async function Home() {
   return (
     <main className={styles.landingContainer}>
+      <div className={styles.backgroundLayer} />
+      <div className={styles.el} />
       <header className={styles.header}>
         <span>
           Every page with its project will have its own animation, because I
@@ -18,8 +20,6 @@ export default async function Home() {
         </div>
       </header>
       <section className={`${styles.introduction}`}>
-        <div className={styles.backgroundLayer} />
-        <div className={styles.el} />
         <div
           style={{
             display: "flex",
@@ -87,23 +87,23 @@ export default async function Home() {
           }}
         >
           <span></span>
-          gg
+          calculator
         </Link>
         <Link
           href={{
-            pathname: "/tic-tac", // using object literal here, in case i need to add query(specify path)
+            pathname: "/", // using object literal here, in case i need to add query(specify path)
           }}
         >
           <span></span>
-          wp
+          placeholder
         </Link>
         <Link
           href={{
-            pathname: "/shinra",
+            pathname: "/",
           }}
         >
           <span></span>
-          ss
+          placeholder
         </Link>
         <Link
           href={{
