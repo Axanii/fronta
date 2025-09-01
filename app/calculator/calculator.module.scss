@@ -1,6 +1,6 @@
 .page {
   height: 100vh;
-width: auto;
+  width: 100vw;
   background-color: black;
   display: grid;
   justify-content: center;
@@ -8,12 +8,14 @@ width: auto;
 }
 
 .container {
+  width: 25vw;
   border: 1px solid yellow;
   padding: 1rem 1rem 1.5rem;
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
   margin: 0;
+
   .history {
     color: gray;
     border: none;
@@ -39,21 +41,20 @@ width: auto;
     display: grid;
     grid-template-rows: repeat(4, 1fr);
     gap: 5px;
+    justify-content: center;
     .basicFuncs,
     .upperRow,
     .middleRow,
     .lowerRow,
     .lastRow {
-      margin-left: 5%;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       > * {
         // all elements within sections.
         cursor: pointer;
-        width: 6rem;
-        height: 6rem;
-        min-height: 4.5rem;
-        min-width: 4.5rem; // AC button has more width on smaller screens, makes buttons look uneven
+        width: 100%;
+        height: 100%;
+        padding: 1.25rem;
         font-size: 2.5rem;
         text-align: center;
         border-radius: 999px;
@@ -65,4 +66,3 @@ width: auto;
     }
   }
 }
-
