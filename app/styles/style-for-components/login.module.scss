@@ -11,6 +11,7 @@
 }
 
 .background {
+  position: fixed;
   width: 100vw;
   height: 100vh;
   animation: breathe 12s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* Smoother timing function */
@@ -25,18 +26,14 @@
     #151626,
     #080121
   );
-  z-index: 1;
+  z-index: 998;
 }
-// .stars {
-//   position: absolute;
-//   inset: -1;
-//   background-color: inherit;
-// }
 
 .modal {
+  z-index: 999;
   height: 70%;
   width: 30%;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

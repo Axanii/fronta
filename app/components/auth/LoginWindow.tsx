@@ -4,7 +4,11 @@ import style from "@/app/styles/style-for-components/login.module.scss";
 import { useState } from "react";
 import useLoginStore from "@/app/store/loginStore";
 import Close from "../CloseButton";
-import { useModal } from "@/app/context/ModalContext";
+import { useActionState } from "react";
+
+import { useRouter } from "next/navigation";
+import { signup } from "@/app/actions/signup";
+
 
 const LoginWindow: React.FC = () => {
   const [nickname, setNickname] = useState("");
@@ -15,9 +19,12 @@ const LoginWindow: React.FC = () => {
   const token = useLoginStore((state) => state.token);
   const login = useLoginStore((state) => state.login);
 
-  const { closeModal } = useModal();
+  const [state,action,pending] = useActionState(signup, undefined)
+
+  const router = useRouter();
 
   const handleNeedRegister = () => {
+    console.log("clicked");
     setNeedReg(true);
   };
   const handleRegitration = (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,7 +39,7 @@ const LoginWindow: React.FC = () => {
     if (nickname && pass) {
       try {
         login({ username: nickname, password: pass });
-        closeModal();
+        router.push("/");
       } catch (err) {
         alert((err as Error).message);
       }
@@ -58,6 +65,8 @@ const LoginWindow: React.FC = () => {
                     name="regName"
                   />
                 </div>
+                      {state?.errors?.regName && <p>{state.errors.regName}</p>}
+
                 <div className={style.passwordInput}>
                   <label htmlFor="regPassword">Password</label>
                   <input
@@ -67,6 +76,7 @@ const LoginWindow: React.FC = () => {
                     name="regPassword"
                   />
                 </div>
+                {state?.errors?.regPassword && <p>{state.errors.regPassword }</p>}
                 <button className={style.loginButton} type="submit">
                   {" "}
                   {/* mirrored styles for register and login   */}

@@ -1,12 +1,8 @@
-import CalcGrid from "./CalculatorGrid";
-import style from "./calculator.module.scss"
+
+import TokenWrapperCalculator from "./TokenWrapper";
 
 const CalculatorPage = () => {
-  return (
-    <div className={style.page}>
-      <CalcGrid />
-    </div>
-  );
+  return <TokenWrapperCalculator />
 };
 
 export default CalculatorPage;

@@ -1,11 +1,22 @@
-.page {
+.wrapper {
   height: 100vh;
   width: 100vw;
+    background-color: black;
+}
+
+.page {
   background-color: black;
   display: grid;
   justify-content: center;
   align-items: center;
-}
+  gap: 0;
+
+    > h1 {
+      font-size: 3rem;
+      color: white;
+      text-align: center;
+    }
+  }
 
 .container {
   width: 25vw;
@@ -14,7 +25,7 @@
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
-  margin: 0;
+  margin: 0 0 20% 0;
 
   .history {
     color: gray;
@@ -23,8 +34,8 @@
   }
   .screen {
     color: white;
-    border: none;
     margin-bottom: 1rem;
+    border: none;
   }
   .history,
   .screen {
@@ -49,8 +60,10 @@
     .lastRow {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
+      column-gap: 5px;
       > * {
         // all elements within sections.
+        border: none;
         cursor: pointer;
         width: 100%;
         height: 100%;
@@ -58,11 +71,31 @@
         font-size: 2.5rem;
         text-align: center;
         border-radius: 999px;
-      }
-      .zero {
-        grid-column: 1/3;
-        width: auto;
+        box-shadow: 0 4px 0 transparent;
+        transition: all 0.1s ease-in-out;
+        &:active {
+          background-color: #fffcfcbf;
+          transform: translateY(3px);
+
+          /* Shrink shadow → looks pressed in */
+          box-shadow: 0 1px 0 transparent;
+        }
       }
     }
+    .zero {
+      grid-column: 1/3;
+      width: auto;
+    }
   }
+}
+
+// styles for /,*,+,-,=
+.calcs {
+  background-color: #dc7b21;
+}
+
+.percent,
+.plusminus,
+.ac {
+  background-color: #ffffff87;
 }

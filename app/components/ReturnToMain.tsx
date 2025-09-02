@@ -1,12 +1,14 @@
-'use client'
+"use client";
 import { useRouter } from "next/navigation";
-import style from "@/app/styles/style-for-components/buttons.module.scss"
+import style from "@/app/styles/style-for-components/buttons.module.scss";
 
 const ReturnToMain = () => {
-    const router = useRouter()
+  const router = useRouter();
   return (
-    <button className={style.backButton}
-     onClick={() => router.push("/")}>
+    <button
+      className={style.backButton}
+      onClick={() => router.push("/")}
+    >
       Back to main
     </button>
   );

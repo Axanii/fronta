@@ -30,15 +30,12 @@ const CalcGrid: React.FC = () => {
   const calculate = useCallback(() => {
     try {
       const safeNum = value.replace(/(\d+(\.\d+)?)%/g, "($1/100)");
-
       /* 
 	(\d+(\.\d+)?) → matches a number:
 	\d+ → one or more digits (e.g., 50)
 	(\.\d+)? → optional decimal part (e.g., .25 in 50.25)
 	Outer parentheses (...) → capture the entire number, so you can reference it in replacement as $1.
 	% → matches a literal percent sign.
-
-
       */
       const res = evaluate(safeNum).toString();
       setHistory(value);
@@ -54,7 +51,10 @@ const CalcGrid: React.FC = () => {
     inputRef.current?.focus();
   }, []);
 
-  const clearVal = useCallback(() => setValue(""), []);
+  const clearVal = useCallback(() => {
+    setValue("");
+    setHistory("");
+  }, []);
 
   useEffect(() => {
     const isEditable = (el: Element | null) =>
@@ -115,28 +115,40 @@ const CalcGrid: React.FC = () => {
             className={style.percent}
           />
           <Button
-            label="/"
+            label="÷"
             onClick={() => handleButtonClick("/")}
-            className={style.division}
+            className={`${style.division} ${style.calcs}`}
           />
         </section>
         <section className={style.upperRow}>
           <Button label="7" onClick={() => handleButtonClick("7")} />
           <Button label="8" onClick={() => handleButtonClick("8")} />
           <Button label="9" onClick={() => handleButtonClick("9")} />
-          <Button label="*" onClick={() => handleButtonClick("*")} />
+          <Button
+            className={style.calcs}
+            label="X"
+            onClick={() => handleButtonClick("*")}
+          />
         </section>
         <section className={style.middleRow}>
           <Button label="4" onClick={() => handleButtonClick("4")} />
           <Button label="5" onClick={() => handleButtonClick("5")} />
           <Button label="6" onClick={() => handleButtonClick("6")} />
-          <Button label="-" onClick={() => handleButtonClick("-")} />
+          <Button
+            className={style.calcs}
+            label="-"
+            onClick={() => handleButtonClick("-")}
+          />
         </section>
         <section className={style.lowerRow}>
           <Button label="1" onClick={() => handleButtonClick("1")} />
           <Button label="2" onClick={() => handleButtonClick("2")} />
           <Button label="3" onClick={() => handleButtonClick("3")} />
-          <Button label="+" onClick={() => handleButtonClick("+")} />
+          <Button
+            className={style.calcs}
+            label="+"
+            onClick={() => handleButtonClick("+")}
+          />
         </section>
         <section className={style.lastRow}>
           <Button
@@ -145,7 +157,7 @@ const CalcGrid: React.FC = () => {
             onClick={() => handleButtonClick("0")}
           />
           <Button label="." onClick={() => handleButtonClick(".")} />
-          <Button label="=" onClick={calculate} />
+          <Button className={style.calcs} label="=" onClick={calculate} />
         </section>
       </section>
     </div>

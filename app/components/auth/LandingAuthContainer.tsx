@@ -1,20 +1,13 @@
 "use client";
 import style from "@/app/styles/style-for-components/landingAuth.module.scss";
 import useLoginStore from "@/app/store/loginStore";
-import { useState, useEffect } from "react";
-import LoginWindow from "./LoginWindow";
-import { ModalProvider } from "@/app/context/ModalContext";
+import { useRouter } from "next/navigation";
+
 
 const LandingAuth = () => {
   const { logout, token } = useLoginStore((state) => state);
-  const [showModal, setShowModal] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const handleCloseModal = () => setShowModal(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  if (!isMounted) return null;
+  const router = useRouter()
 
   return (
     <>
@@ -26,18 +19,11 @@ const LandingAuth = () => {
         <>
           <button
             className={style.landingLogin}
-            onClick={() => setShowModal(true)}
+            onClick={() => router.push('/auth')}
           >
             Log In / Sign Up
           </button>
         </>
-      )}
-      {showModal && (
-        <div className={style.modalOverlay}>
-          <ModalProvider closeModal={handleCloseModal}>
-            <LoginWindow />
-          </ModalProvider>
-        </div>
       )}
     </>
   );
