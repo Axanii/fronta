@@ -19,7 +19,7 @@ const LoginWindow: React.FC = () => {
   const token = useLoginStore((state) => state.token);
   const login = useLoginStore((state) => state.login);
 
-  const [state,action,pending] = useActionState(signup, undefined)
+  const [state,action] = useActionState(signup, undefined)
 
   const router = useRouter();
 
@@ -55,7 +55,7 @@ const LoginWindow: React.FC = () => {
             <div className={style.modal}>
               <Close />
               <h1>Register</h1>
-              <form onSubmit={handleRegitration} className={style.loginForm}>
+              <form action={action} onSubmit={handleRegitration} className={style.loginForm}>
                 <div className={style.emailInput}>
                   <label htmlFor="regName">Nickname</label>
                   <input
