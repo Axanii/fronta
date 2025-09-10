@@ -1,0 +1,23 @@
+.tempConverterContainer {
+  position: absolute;
+  margin-top: 2%;
+  z-index: 111;
+  color: white;
+  height: 20%;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 11%;
+
+  >h1 {
+    color: black;
+  }
+  span {
+    
+    color: black;
+  }
+  
+}

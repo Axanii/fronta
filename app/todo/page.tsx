@@ -7,7 +7,7 @@ import LoginWindow from "../components/auth/LoginWindow";
 import useLoginStore from "../store/loginStore";
 import LogOut from "../components/LogoutButton";
 import ReturnToMain from "../components/ReturnToMain";
-import { ModalProvider } from "../context/ModalContext";
+// import { ModalProvider } from "../context/ModalContext";
 
 const ToDoPage = () => {
   const [input, setInput] = useState("");
@@ -57,9 +57,9 @@ const ToDoPage = () => {
   };
 
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  // const handleCloseModal = () => {
+  //   setShowModal(false);
+  // };
   
   useEffect(() => {
     if (!token) {
@@ -137,9 +137,8 @@ const ToDoPage = () => {
         </>
       ) : (
         showModal &&  (
-          <ModalProvider closeModal={handleCloseModal}>
+
             <LoginWindow />
-          </ModalProvider>
         )
       )}
     </>

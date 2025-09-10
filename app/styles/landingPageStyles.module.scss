@@ -6,7 +6,6 @@
 .header {
   width: 100%;
   display: inline-flex;
-
   align-items: center;
   justify-content: space-between;
   color: white;
@@ -32,7 +31,7 @@
 }
 
 .introduction {
-  position: relative; // parent must be relative to allow absolute child
+  position: relative;
   display: flex;
   flex-direction: row;
   padding: 3rem;
@@ -238,7 +237,7 @@
     bottom: 10%;
   }
   &:hover span::after {
-    top: 20%;
+    top: 10%;
   }
 }
 
@@ -247,3 +246,4 @@
 }
 
 /* ____________________________________________________________ */
+
