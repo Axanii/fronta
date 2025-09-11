@@ -7,7 +7,7 @@ import Close from "../CloseButton";
 import { useActionState } from "react";
 
 import { useRouter } from "next/navigation";
-import { signup } from "@/app/actions/signup";
+// import { signup } from "@/app/actions/signup";
 
 
 const LoginWindow: React.FC = () => {
@@ -19,7 +19,7 @@ const LoginWindow: React.FC = () => {
   const token = useLoginStore((state) => state.token);
   const login = useLoginStore((state) => state.login);
 
-  const [state,action] = useActionState(signup, undefined)
+  // const [state,action] = useActionState(signup, undefined)
 
   const router = useRouter();
 
@@ -55,7 +55,7 @@ const LoginWindow: React.FC = () => {
             <div className={style.modal}>
               <Close />
               <h1>Register</h1>
-              <form action={action} onSubmit={handleRegitration} className={style.loginForm}>
+              <form onSubmit={handleRegitration} className={style.loginForm}>
                 <div className={style.emailInput}>
                   <label htmlFor="regName">Nickname</label>
                   <input
@@ -65,7 +65,7 @@ const LoginWindow: React.FC = () => {
                     name="regName"
                   />
                 </div>
-                      {state?.errors?.regName && <p>{state.errors.regName}</p>}
+                      {/* {state?.errors?.regName && <p>{state.errors.regName}</p>} */}
 
                 <div className={style.passwordInput}>
                   <label htmlFor="regPassword">Password</label>
@@ -76,7 +76,7 @@ const LoginWindow: React.FC = () => {
                     name="regPassword"
                   />
                 </div>
-                {state?.errors?.regPassword && <p>{state.errors.regPassword }</p>}
+                {/* {state?.errors?.regPassword && <p>{state.errors.regPassword }</p>} */}
                 <button className={style.loginButton} type="submit">
                   {" "}
                   {/* mirrored styles for register and login   */}

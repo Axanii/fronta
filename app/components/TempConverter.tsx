@@ -1,12 +1,15 @@
 "use client";
 import styles from "@/app/styles/style-for-components/tempconverter.module.scss";
+import { to } from "mathjs";
 import { useState, useRef, useEffect } from "react";
 
 const TempConverter = () => {
-  const [input, setInput] = useState<number>(0);
+  const [input, setInput] = useState<string>("");
   const [resVal, setResVal] = useState<number>();
-  const fromRef = useRef<HTMLSelectElement>(null);
-  const toRef = useRef<HTMLSelectElement>(null);
+  const [fromUnit, setFromUnit] = useState<string>("");
+  const [toUnit, setToUnit] = useState<string>("");
+
+  let inputToNum = parseInt(input);
 
   // lookup table. less verbose in terms of readability + extendable.
   const conversions: Record<string, (temp: number) => number> = {
@@ -23,7 +26,7 @@ const TempConverter = () => {
     const fn = conversions[key];
     if (from === to) return temp;
     if (!fn) return new Error("Wrong conversion");
-    const res = fn(temp);
+    const res = parseFloat(fn(temp).toFixed(3))
     setResVal(res);
     return resVal;
   }
@@ -33,37 +36,58 @@ const TempConverter = () => {
       <h1>Temperature Converter</h1>
       <div className={styles.tempOptions}>
         <input
+        placeholder="0"
           id="tempInput"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setInput(Number(e.target.value))
+            setInput(e.target.value)
           }
           value={input}
           type="number"
           className={styles.tempText}
         />
-        <select ref={fromRef} name="FromTemp" id="FromTemp">
-          <option value="Celsius">Celsius</option>
-          <option value="Farenheit">Farenheit</option>
-          <option value="Kelvin">Kelvin</option>
-        </select>
-        <select ref={toRef} name="ToTemp" id="ToTemp">
-          <option value="Celsius">Celsius</option>
-          <option value="Farenheit">Farenheit</option>
-          <option value="Kelvin">Kelvin</option>
-        </select>
+        <div className={styles.fromContainer}>
+          <span>From:</span>
+          <select
+            onChange={(e) => setFromUnit(e.target.value)}
+            name="FromTemp"
+            id="FromTemp"
+          >
+            <option></option>
+            <option value="Celsius">Celsius</option>
+            <option value="Farenheit">Farenheit</option>
+            <option value="Kelvin">Kelvin</option>
+          </select>
+        </div>
+        <div className={styles.toContainer}>
+            <span>To:</span>
+          <select
+            onChange={(e) => setToUnit(e.target.value)}
+            name="ToTemp"
+            id="ToTemp"
+          >
+            <option></option>
+            <option value="Celsius">Celsius</option>
+            <option value="Farenheit">Farenheit</option>
+            <option value="Kelvin">Kelvin</option>
+          </select>
+        </div>
+
         <button
           onClick={() => {
-            const from = fromRef.current?.value ?? "";
-            const to = toRef.current?.value ?? "";
-            convertFunc(input, from, to);
+            convertFunc(inputToNum, fromUnit, toUnit);
           }}
+          disabled={!fromUnit || !toUnit}
           type="button"
           name="convert"
+          className={styles.button}
         >
           Convert
         </button>
       </div>
-      <span>{resVal}</span>
+      <span className={styles.result}>
+          {resVal && `Converted ${fromUnit} to ${toUnit}: ${resVal}`}
+
+      </span>
     </section>
   );
 };

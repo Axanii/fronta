@@ -5,17 +5,11 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import style from "./calculator.module.scss";
 import { Button } from "./CalcButton";
 
-// interface CalcGridProps {
-//   addition: () => void;
-//   subtraction: () => void;
-//   division: () => void;
-//   multiplication: () => void;
-// }
-
 const CalcGrid: React.FC = () => {
   const [value, setValue] = useState("");
   const [history, setHistory] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+ 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Allow only numbers
@@ -84,6 +78,7 @@ const CalcGrid: React.FC = () => {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [setValue, calculate]);
+
 
   return (
     <div className={style.container}>
