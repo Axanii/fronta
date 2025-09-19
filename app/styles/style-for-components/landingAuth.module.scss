@@ -1,13 +1,13 @@
 .modalOverlay {
-    position: fixed;
-    inset: 0;
-    z-index: 999;
 }
 
 .landingLogout,
 .landingLogin {
-    cursor: pointer;
-    font-size: 20px;
-    padding: 5px 20px;
-    border-radius: 20px;
+  position: relative;
+
+  z-index: 999;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 5px 20px;
+  border-radius: 20px;
 }

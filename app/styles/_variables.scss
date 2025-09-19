@@ -1,0 +1,22 @@
+$color-bg: hsl(274, 9%, 15%);
+$color-white: #ffffff;
+$color-black: #000000;
+
+// FONT STACK
+$font-primary: "Inter", sans-serif;
+
+// SPACING SCALE
+$space-1: 0.5rem;
+$space-2: 1rem;
+$space-3: 1.5rem;
+$space-4: 2rem;
+
+// BREAKPOINTS
+$breakpoints: (
+  xs: 480px,   // small phones
+  sm: 640px,   // phones
+  md: 768px,   // tablets
+  lg: 1024px,  // small laptops
+  xl: 1280px,  // desktops
+  xxl: 1536px  // large desktops
+);

@@ -1,3 +1,4 @@
+@use "variables" as *;
 
 /* Helper function replaces all occurrences of $search with $replace in $string.
   Unused here, useful to remember for future reference. */
@@ -34,3 +35,26 @@
 
   font-family: $fontName, $fallback;
 }
+
+
+/* -------------------------------------------------- */
+
+@mixin respond($breakpoint) {
+  @media (max-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+@mixin flex-center($display:flex, $direction: row, $gap: 0) {
+  display: $display;
+  flex-direction: $direction;
+  justify-content: center;
+  align-items: center;
+  gap: $gap;
+}
+
+@mixin fluid-text($min, $max) {
+  font-size: clamp($min, 2vw, $max);
+}
+
+

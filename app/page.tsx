@@ -4,6 +4,8 @@ import gandalf from "@/app/assets/images/gandalf.jpeg";
 import styles from "@/app/styles/landingPageStyles.module.scss";
 import LandingAuth from "./components/auth/LandingAuthContainer";
 import TempConverter from "./components/TempConverter";
+import ExchangeRateConverter from "./components/ExchangeRate";
+
 
 export default async function Home() {
   return (
@@ -115,7 +117,10 @@ export default async function Home() {
           todo
         </Link>
       </section>
-          <TempConverter />
+      <section className={styles.converterWrapper}>
+        <TempConverter />
+        <ExchangeRateConverter />
+      </section>
     </main>
   );
 }

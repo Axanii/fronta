@@ -1,5 +1,6 @@
 import type { NextConfig } from "next"
 import type { Configuration, RuleSetRule } from "webpack"
+const path = require("path");
 
 const nextConfig: NextConfig = {
   webpack(config: Configuration) {
@@ -35,6 +36,9 @@ const nextConfig: NextConfig = {
 
     return config
   },
+  sassOptions: {
+    includePaths: [path.join(__dirname, "app/styles")]
+  }
 }
 
 export default nextConfig

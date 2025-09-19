@@ -1,7 +1,6 @@
 "use client";
 import styles from "@/app/styles/style-for-components/tempconverter.module.scss";
-import { to } from "mathjs";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 const TempConverter = () => {
   const [input, setInput] = useState<string>("");
@@ -26,7 +25,7 @@ const TempConverter = () => {
     const fn = conversions[key];
     if (from === to) return temp;
     if (!fn) return new Error("Wrong conversion");
-    const res = parseFloat(fn(temp).toFixed(3))
+    const res = parseFloat(fn(temp).toFixed(3));
     setResVal(res);
     return resVal;
   }
@@ -36,7 +35,7 @@ const TempConverter = () => {
       <h1>Temperature Converter</h1>
       <div className={styles.tempOptions}>
         <input
-        placeholder="0"
+          placeholder="0"
           id="tempInput"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setInput(e.target.value)
@@ -59,7 +58,7 @@ const TempConverter = () => {
           </select>
         </div>
         <div className={styles.toContainer}>
-            <span>To:</span>
+          <span>To:</span>
           <select
             onChange={(e) => setToUnit(e.target.value)}
             name="ToTemp"
@@ -85,8 +84,7 @@ const TempConverter = () => {
         </button>
       </div>
       <span className={styles.result}>
-          {resVal && `Converted ${fromUnit} to ${toUnit}: ${resVal}`}
-
+        {resVal && `Converted ${fromUnit} to ${toUnit}: ${resVal}`}
       </span>
     </section>
   );

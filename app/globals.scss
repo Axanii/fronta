@@ -1,6 +1,3 @@
-@use './styles/_mixins.scss' as *; // not useful or applicable here, mixins are for more complex applications, did that just for practice.
-
-/* 3) apply globally (optional) so body uses the font by default */
 html, body {
   box-sizing: border-box;
   max-width: 100vw;
